@@ -1,0 +1,213 @@
+ mysql> create database AddressBookService;
+---usercase1--------
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| addressbookservice      |
+| employee                |
+| employee_contact        |
+| employee_servuces       |
+| information_schema      |
+| mysql                   |
+| new_schema              |
+| payroll_employeeservice |
+| payroll_services        |
+| payrolle_service        |
+| performance_schema      |
+| sakila                  |
+| sys                     |
+| world                   |
++-------------------------+
+14 rows in set (0.00 sec)
+
+-----usercase2-------
+use addressbookservice;
+Database changed
+mysql>  create table addressbookservice(firstname varchar(50) not null,lastname varchar(50) not null,city varchar(50) not null,state varchar(50) not null,zip int not null,phonenumber double not null,email varchar(80) not null);
+Query OK, 0 rows affected (1.11 sec)
+
+ desc addressbookservice;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| firstname   | varchar(50) | NO   |     | NULL    |       |
+| lastname    | varchar(50) | NO   |     | NULL    |       |
+| city        | varchar(50) | NO   |     | NULL    |       |
+| state       | varchar(50) | NO   |     | NULL    |       |
+| zip         | int         | NO   |     | NULL    |       |
+| phonenumber | double      | NO   |     | NULL    |       |
+| email       | varchar(80) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+7 rows in set (0.33 sec)
+
+---usercase3-----
+--inserting new contact to addressbook table---
+
+mysql> insert into addressbookservice(firstname,lastname,city,state,zip,phonenumber,email) values('geeta','math','gulbarga','karnataka','585102','997263252','geeta@gmail.com'),('aishu','agni','vijapur','karnataka','582365','99263521','aishugmail.com'),('anvita','sakshi','banglore','karnataka','52365','2365458623','anvita@gmail.com'),('advika','manna','pune','maharashtra','23652','995823654','advika@gmail.com');
+Query OK, 4 rows affected (0.14 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+ select * from addressbookservice;
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| firstname | lastname | city     | state       | zip    | phonenumber | email            |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| geeta     | math     | gulbarga | karnataka   | 585102 |   997263252 | geeta@gmail.com  |
+| aishu     | agni     | vijapur  | karnataka   | 582365 |    99263521 | aishugmail.com   |
+| anvita    | sakshi   | banglore | karnataka   |  52365 |  2365458623 | anvita@gmail.com |
+| advika    | manna    | pune     | maharashtra |  23652 |   995823654 | advika@gmail.com |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+4 rows in set (0.00 sec)
+
+---usercase4---
+---editing the existing contact by their firstname----
+
+mysql> update addressbookservice set lastname='patil' where firstname='geeta';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from addressbookservice;
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| firstname | lastname | city     | state       | zip    | phonenumber | email            |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| geeta     | patil    | gulbarga | karnataka   | 585102 |   997263252 | geeta@gmail.com  |
+| aishu     | agni     | vijapur  | karnataka   | 582365 |    99263521 | aishugmail.com   |
+| anvita    | sakshi   | banglore | karnataka   |  52365 |  2365458623 | anvita@gmail.com |
+| advika    | manna    | pune     | maharashtra |  23652 |   995823654 | advika@gmail.com |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+4 rows in set (0.06 sec)
+
+
+---usercase5---
+---deleting the contact by their lastname--
+mysql> delete from addressbookservice where lastname='patil';
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select *from addressbookservice;
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| firstname | lastname | city     | state       | zip    | phonenumber | email            |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| aishu     | agni     | vijapur  | karnataka   | 582365 |    99263521 | aishugmail.com   |
+| anvita    | sakshi   | banglore | karnataka   |  52365 |  2365458623 | anvita@gmail.com |
+| advika    | manna    | pune     | maharashtra |  23652 |   995823654 | advika@gmail.com |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+3 rows in set (0.06 sec)
+
+
+
+---usercase6---
+--retrive the contact by city or state--
+
+mysql> select *from addressbookservice where city='vijaur'or state='karnataka';
++-----------+----------+----------+-----------+--------+-------------+------------------+
+| firstname | lastname | city     | state     | zip    | phonenumber | email            |
++-----------+----------+----------+-----------+--------+-------------+------------------+
+| aishu     | agni     | vijapur  | karnataka | 582365 |    99263521 | aishugmail.com   |
+| anvita    | sakshi   | banglore | karnataka |  52365 |  2365458623 | anvita@gmail.com |
++-----------+----------+----------+-----------+--------+-------------+------------------+
+2 rows in set (0.00 sec)
+
+
+--usercase7--
+--size of addressbookservice by city and state---
+mysql> select count(firstname) from addressbookservice where city='vijapur';
++------------------+
+| count(firstname) |
++------------------+
+|                1 |
++------------------+
+1 row in set (0.05 sec)
+
+mysql> select count(firstname) from addressbookservice where state='karnataka';
++------------------+
+| count(firstname) |
++------------------+
+|                2 |
++------------------+
+1 row in set (0.00 sec)
+
+
+--usercase8--
+-soriting the name alphbetically for given city---
+ insert into addressbookservice(firstname,lastname,city,state,zip,phonenumber,email) values('geeta','math','gulbarga','karnataka','25632','99123654','geeta@gmail.com'),('pallavi','mallik','jatt','maharastra','52563','23654552','pavvi@gmail.com'),('kavita','kavi','pune','maharshtra','562365','256324564','gahsh@gmail.com'),('anirush','ani','haveri','karnataka','256325','25552145','aniru@gmail.com');
+Query OK, 4 rows affected (0.14 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+mysql> select *from addressbookservice;
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| firstname | lastname | city     | state       | zip    | phonenumber | email            |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+| aishu     | agni     | vijapur  | karnataka   | 582365 |    99263521 | aishugmail.com   |
+| anvita    | sakshi   | banglore | karnataka   |  52365 |  2365458623 | anvita@gmail.com |
+| advika    | manna    | pune     | maharashtra |  23652 |   995823654 | advika@gmail.com |
+| geeta     | math     | gulbarga | karnataka   |  25632 |    99123654 | geeta@gmail.com  |
+| pallavi   | mallik   | jatt     | maharastra  |  52563 |    23654552 | pavvi@gmail.com  |
+| kavita    | kavi     | pune     | maharshtra  | 562365 |   256324564 | gahsh@gmail.com  |
+| anirush   | ani      | haveri   | karnataka   | 256325 |    25552145 | aniru@gmail.com  |
++-----------+----------+----------+-------------+--------+-------------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> select firstname,city from addressbookservice order by city;
++-----------+----------+
+| firstname | city     |
++-----------+----------+
+| anvita    | banglore |
+| geeta     | gulbarga |
+| anirush   | haveri   |
+| pallavi   | jatt     |
+| advika    | pune     |
+| kavita    | pune     |
+| aishu     | vijapur  |
++-----------+----------+
+7 rows in set (0.05 sec)
+
+--usercase9--
+--altering the table with addressbookservice name and contact type-
+mysql> alter table addressbookservice add bookname varchar(45) not null, add contactType varchar(30) not null;
+Query OK, 0 rows affected (1.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc addressbookservice;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| firstname   | varchar(50) | NO   |     | NULL    |       |
+| lastname    | varchar(50) | NO   |     | NULL    |       |
+| city        | varchar(50) | NO   |     | NULL    |       |
+| state       | varchar(50) | NO   |     | NULL    |       |
+| zip         | int         | NO   |     | NULL    |       |
+| phonenumber | double      | NO   |     | NULL    |       |
+| email       | varchar(80) | NO   |     | NULL    |       |
+| bookname    | varchar(45) | NO   |     | NULL    |       |
+| contactType | varchar(30) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+9 rows in set (0.07 sec)
+
+mysql> update addressbookservice set bookname='one',contactType='family' where lastname='math';
+Query OK, 1 row affected (0.22 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update addressbookservice set bookname='two',contactType='workers' where firstname='pallavi';
+Query OK, 1 row affected (0.15 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update addressbookservice set bookname='three',contactType='fashion' where lastname='kavi';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from addressbookservice where contactType='fashion';
++-----------+----------+------+------------+--------+-------------+-----------------+----------+-------------+
+| firstname | lastname | city | state      | zip    | phonenumber | email           | bookname | contactType |
++-----------+----------+------+------------+--------+-------------+-----------------+----------+-------------+
+| kavita    | kavi     | pune | maharshtra | 562365 |   256324564 | gahsh@gmail.com | three    | fashion     |
++-----------+----------+------+------------+--------+-------------+-----------------+----------+-------------+
+1 row in set (0.05 sec)
+
+--usercase10--
+-ability to get count of contacts by contacttype--
+mysql> select count(firstname) from addressbookservice where contactType='fashion';
++------------------+
+| count(firstname) |
++------------------+
+|                1 |
++------------------+
+1 row in set (0.00 sec)
+
